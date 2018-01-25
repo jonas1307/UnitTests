@@ -1,20 +1,22 @@
 ﻿using System;
+using System.Dynamic;
 using NUnit.Framework;
-using NUnit.Framework.Internal;
 using UnitTests;
+using ImpromptuInterface;
 
 namespace UnitTests
 {
     public interface ILog
     {
-        void Write(string msg);
+        bool Write(string msg);
     }
 
     public class ConsoleLog : ILog
     {
-        public void Write(string msg)
+        public bool Write(string msg)
         {
             Console.WriteLine(msg);
+            return true;
         }
     }
 
@@ -30,16 +32,34 @@ namespace UnitTests
 
         public void Deposit(int amount)
         {
-            _log.Write($"Depositing $ {amount}");
-            Balance += amount;
+            if (_log.Write($"Depositing $ {amount}"))
+                Balance += amount;
         }
     }
 }
 
 public class NullLog : ILog
 {
-    public void Write(string msg)
-    { }
+    public bool Write(string msg)
+    {
+        return true;
+    }
+}
+
+public class Null<T> : DynamicObject where T : class
+{
+    public static T Instance
+    {
+        get { return new Null<T>().ActLike<T>(); }
+    }
+
+    public override bool TryInvokeMember(InvokeMemberBinder binder,
+        object[] args, out object result)
+    {
+        result = Activator.CreateInstance(typeof(T).GetMethod(binder.Name).ReturnType);
+
+        return true;
+    }
 }
 
 [TestFixture]
@@ -60,6 +80,18 @@ public class BankAccountNewTests
     public void DepositUnitTestWithFake()
     {
         var log = new NullLog();
+
+        ba = new BankAccountNew(log) { Balance = 100 };
+        ba.Deposit(100);
+
+        Assert.That(ba.Balance, Is.EqualTo(200));
+    }
+
+    [Test]
+    public void DepositUnitTestWithDynamicFake()
+    {
+        // Dynamic fakes are good to instantiate, but they don't act like the class.
+        var log = Null<ILog>.Instance;
 
         ba = new BankAccountNew(log) { Balance = 100 };
         ba.Deposit(100);
