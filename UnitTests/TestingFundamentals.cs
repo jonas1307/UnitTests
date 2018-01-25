@@ -27,5 +27,15 @@ namespace UnitTests
 
             Assert.Warn("I'm warning ya!");
         }
+
+        [Test]
+        public void MultipleAssertions()
+        {
+            Assert.Multiple(() =>
+            {
+                Assert.That(1, Is.EqualTo(0));
+                Assert.That(2, Is.LessThan(1));
+            });
+        }
     }
 }
