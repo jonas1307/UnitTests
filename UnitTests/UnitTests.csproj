@@ -46,6 +46,7 @@
     <Compile Include="BankAccount.cs" />
     <Compile Include="BankAccountTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestingFundamentals.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
