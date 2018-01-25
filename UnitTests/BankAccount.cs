@@ -11,7 +11,7 @@ namespace UnitTests
 
         public void Deposit(int amount)
         {
-
+            Balance += amount;
         }
 
         public void Withdraw(int amount)
