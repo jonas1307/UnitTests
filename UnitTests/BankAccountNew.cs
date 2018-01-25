@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Dynamic;
 using NUnit.Framework;
 using UnitTests;
@@ -56,6 +57,37 @@ public class NullLogWithResult : ILog
     }
     public bool Write(string msg)
     {
+        return _expectedResult;
+    }
+}
+
+public class LogMock : ILog
+{
+    private bool _expectedResult;
+
+    public Dictionary<string, int> MethodCalls;
+
+    public LogMock(bool expectedResult)
+    {
+        _expectedResult = expectedResult;
+        MethodCalls = new Dictionary<string, int>();
+    }
+
+    private void AddOrIncrement(string methodName)
+    {
+        if (MethodCalls.ContainsKey(methodName))
+        {
+            MethodCalls[methodName]++;
+        }
+        else
+        {
+            MethodCalls.Add(methodName, 1);
+        }
+    }
+
+    public bool Write(string msg)
+    {
+        AddOrIncrement("Write");
         return _expectedResult;
     }
 }
@@ -122,5 +154,20 @@ public class BankAccountNewTests
         ba.Deposit(100);
 
         Assert.That(ba.Balance, Is.EqualTo(200));
+    }
+
+    [Test]
+    public void DepositTestWithMock()
+    {
+        var log = new LogMock(true);
+
+        ba = new BankAccountNew(log) { Balance = 100 };
+        ba.Deposit(100);
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(ba.Balance, Is.EqualTo(200));
+            Assert.That(log.MethodCalls[nameof(LogMock.Write)], Is.EqualTo(1));
+        });
     }
 }
