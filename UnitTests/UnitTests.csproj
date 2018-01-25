@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BankAccount.cs" />
+    <Compile Include="BankAccountNew.cs" />
     <Compile Include="Fixtures\BankAccountFixture.cs" />
     <Compile Include="Fixtures\DataDrivenTestsFixture.cs" />
     <Compile Include="Fixtures\QuadraticFixture.cs" />
