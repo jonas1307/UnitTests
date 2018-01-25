@@ -1,3 +1,4 @@
+using System;
 using NUnit.Framework;
 
 namespace UnitTests
@@ -21,6 +22,14 @@ namespace UnitTests
             _bankAccount.Deposit(100);
 
             Assert.That(_bankAccount.Balance, Is.EqualTo(200));
+        }
+
+        [Test]
+        public void BankAccountShouldThrowOnNonPositiveAmount()
+        {
+            var ex = Assert.Throws<ArgumentException>(() => _bankAccount.Deposit(-100));
+
+            StringAssert.StartsWith("Deposit amount should be positive", ex.Message);
         }
     }
 }
