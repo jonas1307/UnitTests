@@ -7,7 +7,7 @@ namespace UnitTests.Fixtures
     public class QuadraticFixture
     {
         [Test]
-        public void Test()
+        public void QuadraticPositiveValue()
         {
             var result = Solve.Quadratic(1, 10, 16);
 
@@ -19,7 +19,7 @@ namespace UnitTests.Fixtures
         }
 
         [Test]
-        public void Test2()
+        public void QuadraticNegativeValue()
         {
             Assert.Throws<Exception>(() =>
             {
