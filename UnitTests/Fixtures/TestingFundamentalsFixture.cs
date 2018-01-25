@@ -1,4 +1,6 @@
-﻿using NUnit.Framework;
+﻿using System.Collections.Generic;
+using JetBrains.dotMemoryUnit;
+using NUnit.Framework;
 
 namespace UnitTests.Fixtures
 {
@@ -35,6 +37,32 @@ namespace UnitTests.Fixtures
             {
                 Assert.That(1, Is.EqualTo(0));
                 Assert.That(2, Is.LessThan(1));
+            });
+        }
+
+        [Test]
+        public void Test3()
+        {
+            dotMemory.Check(m =>
+            {
+                Assert.That(m.GetObjects(
+                    w => w.Type.Is<Solve>()
+                ).ObjectsCount, Is.EqualTo(0));
+            });
+        }
+
+        [Test]
+        public void Test4()
+        {
+            var checkpoint1 = dotMemory.Check();
+
+            //...
+
+            dotMemory.Check(m =>
+            {
+                Assert.That(m.GetTrafficFrom(checkpoint1)
+                        .Where(w => w.Interface.Is<IEnumerable<int>>()).AllocatedMemory.SizeInBytes,
+                    Is.LessThan(1000));
             });
         }
     }

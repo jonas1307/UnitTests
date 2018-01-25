@@ -2,7 +2,7 @@
 
 namespace UnitTests
 {
-    public static class Solve
+    public class Solve
     {
         public static Tuple<double, double> Quadratic(double a, double b, double c)
         {
