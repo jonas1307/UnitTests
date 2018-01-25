@@ -46,6 +46,20 @@ public class NullLog : ILog
     }
 }
 
+public class NullLogWithResult : ILog
+{
+    private readonly bool _expectedResult;
+
+    public NullLogWithResult(bool expectedResult)
+    {
+        _expectedResult = expectedResult;
+    }
+    public bool Write(string msg)
+    {
+        return _expectedResult;
+    }
+}
+
 public class Null<T> : DynamicObject where T : class
 {
     public static T Instance
@@ -92,6 +106,17 @@ public class BankAccountNewTests
     {
         // Dynamic fakes are good to instantiate, but they don't act like the class.
         var log = Null<ILog>.Instance;
+
+        ba = new BankAccountNew(log) { Balance = 100 };
+        ba.Deposit(100);
+
+        Assert.That(ba.Balance, Is.EqualTo(200));
+    }
+
+    [Test]
+    public void DepositUnitTestWithStub()
+    {
+        var log = new NullLogWithResult(true);
 
         ba = new BankAccountNew(log) { Balance = 100 };
         ba.Deposit(100);
