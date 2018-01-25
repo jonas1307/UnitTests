@@ -46,6 +46,7 @@
     <Compile Include="BankAccount.cs" />
     <Compile Include="Fixtures\BankAccountFixture.cs" />
     <Compile Include="Fixtures\DataDrivenTestsFixture.cs" />
+    <Compile Include="Fixtures\QuadraticFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Fixtures\TestingFundamentalsFixture.cs" />
     <Compile Include="Solve.cs" />
