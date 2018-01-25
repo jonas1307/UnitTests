@@ -1,9 +1,9 @@
 ﻿using NUnit.Framework;
 
-namespace UnitTests
+namespace UnitTests.Fixtures
 {
     [TestFixture]
-    public class TestingFundamentals
+    public class TestingFundamentalsFixture
     {
         [Test]
         public void Assertions()

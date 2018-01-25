@@ -1,10 +1,10 @@
 using System;
 using NUnit.Framework;
 
-namespace UnitTests
+namespace UnitTests.Fixtures
 {
     [TestFixture]
-    public class BankAccountTests
+    public class BankAccountFixture
     {
         private BankAccount _bankAccount;
 
