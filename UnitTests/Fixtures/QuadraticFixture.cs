@@ -9,7 +9,13 @@ namespace UnitTests.Fixtures
         [Test]
         public void Test()
         {
-            Solve.Quadratic(1, 10, 16);
+            var result = Solve.Quadratic(1, 10, 16);
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(result.Item1, Is.EqualTo(-2));
+                Assert.That(result.Item2, Is.EqualTo(-13));
+            });
         }
 
         [Test]
